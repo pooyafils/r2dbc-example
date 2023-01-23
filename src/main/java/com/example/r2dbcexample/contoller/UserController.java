@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 import java.util.UUID;
 
@@ -35,4 +36,17 @@ public class UserController {
 
         return new ResponseEntity(userRepository.findById(UUID.fromString(uuid)),HttpStatus.OK);
     }
+    @PostMapping("/update")
+    public ResponseEntity update(@RequestBody Users users){
+
+        Mono<Users> usersMono=userRepository.findById(users.getId())
+                .flatMap(update->{
+                    update.setUsername(users.getUsername());
+                    update.setName(users.getName());
+                    return userRepository.save(update);
+                });
+        usersMono.subscribe();
+        return new ResponseEntity("updated",HttpStatus.OK);
+    }
+// delete by id
 }
