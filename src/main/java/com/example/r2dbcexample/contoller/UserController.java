@@ -28,6 +28,11 @@ public class UserController {
         users1.setAsNew();
         users1.setNewProduct(true);
         userRepository.save(users1).subscribe();
-        return ResponseEntity.ok("oj");
+        return new ResponseEntity("saved",HttpStatus.OK);
+    }
+    @GetMapping("ById")
+    public ResponseEntity getById(@RequestParam String uuid){
+
+        return new ResponseEntity(userRepository.findById(UUID.fromString(uuid)),HttpStatus.OK);
     }
 }
