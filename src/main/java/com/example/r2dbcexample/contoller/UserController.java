@@ -49,4 +49,11 @@ public class UserController {
         return new ResponseEntity("updated",HttpStatus.OK);
     }
 // delete by id
+    @GetMapping("/delete")
+    public ResponseEntity delete(@RequestParam String uuid){
+      //  Mono<Users> usersMono=userRepository.findById(UUID.fromString(uuid));
+        userRepository.deleteById(UUID.fromString(uuid)).subscribe();
+        return new ResponseEntity("delete",HttpStatus.OK);
+
+    }
 }
